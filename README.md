@@ -1,11 +1,41 @@
-# MovieFinder
-For my fellow co-workers:
+# Movie Finder
 
-2020/03/10
-Hi! I'm Hsucheng Huang, or Aloma. 
+This is a simple one-page app building without webpacks or npm, but with few cdns.
 
-This page is to the ones who dream,
-foolish as they may seem...
-Here's to the hearts that ache;
-here's to the mess we make...
+## Getting Started
 
+Download index.html one way or another, and click on the file; it should run on your browser without any setting up.
+
+## Libraries I use 
+
+1. vue.js
+2. vuex.js
+3. axios.js
+4. vuetify.js
+5. moment.js
+
+
+## Functions ( not coding function!)
+
+### Show List
+
+### Search
+
+### Show Detail of a movie
+
+## Some Tricks
+
+### truncateStringValue
+
+### 
+
+## Problems I encountered
+
+* A
+* B
+
+## To-do items:
+
+* Implement Vuex
+* Add Category Search
+* Add more detail information?

@@ -7,58 +7,68 @@
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
-
+  <link rel="icon" type="image/png" href="https://pbs.twimg.com/profile_images/965898490156146689/7ecFO1xr.jpg"
+    sizes="32x32">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-  <title>here to the one who dream</title>
+  <title>Molteo / Movies</title>
 </head>
-
 <body>
   <div id="app">
     <v-app id="inspire">
       <v-app-bar app color="white">
-        <img src="https://molteo.de/imgs/Logo_yellow.svg" style="max-width:180px" alt="logo" contain>
-        <v-spacer></v-spacer>
-        <div align-center center>
-          <v-text-field solo-inverted flat hide-details label="Search" prepend-inner-icon="search"
-          v-model="searchValue" v-on:change="search" type="text"/>
-        </div>
+        <v-row justify="center" align="center">
+          <v-col lg="6">
+            <img src="https://molteo.de/imgs/Logo_yellow.svg" style="max-width:180px;float:right" alt="logo"
+              v-on:click="init" contain>
+          </v-col>
+          <v-col lg="3">
+            <span class="ml-0">/ movies / {{currentList}}</span>
+          </v-col>
+          <v-col lg="3">
+            <div align-center center>
+              <v-text-field solo-inverted flat hide-details label="Search" prepend-inner-icon="search"
+                v-model="searchValue" v-on:change="search" type="text" v-on:keyup.esc="init" />
+            </div>
+          </v-col>
+        </v-row>
+
       </v-app-bar>
-      <v-content style="background: -webkit-linear-gradient(rgb(97, 191, 206),rgb(8, 178, 201));">
+      <v-content>
         <v-row justify="center">
-          <v-col class="text-center" md="8">
+          <v-col md="8" lg="9" v-on:click.self='clearChoose'
+            style="background: -webkit-linear-gradient(rgb(153, 231, 243),rgb(0, 177, 191));padding:0 40px;">
             <v-container fluid>
-              <span class="title">Top movies</span>
-              <v-layout row wrap>
-                <v-card class="mx-auto ma-4 pa-2" max-width="180" tile v-for="(item, i) in popMovies" :key="i"
+              <v-layout row wrap v-on:click.self='clearChoose'>
+                <v-card class="mx-auto ma-4 pa-2 rounded-card" max-width="180" tile v-for="(item, i) in listMovies" :key="i"
                   v-on:click="showDetail(item)">
-                  <!--v-img
-                  :src="'https://image.tmdb.org/t/p/w500/' + item.poster_path" 
-                  max-height="300px"
-                  dark
-                -->
-                  <v-img src="C:\Users\aloma\Desktop\test.jpg" max-height="300px" dark>
-                  </v-img>
-                  <v-row>
-                    <v-card-subtitle>
-                      <div class="text-truncate" style="max-width: 150px;">{{item.title}}</div>
-                    </v-card-subtitle>
-                  </v-row>
+                  <v-img :src="'https://image.tmdb.org/t/p/w500/' + item.poster_path" max-height="300px" dark>
+                    <!--v-img src="C:\Users\aloma\Desktop\test.jpg" max-height="300px" dark>
+                  </v-img-->
                 </v-card>
               </v-layout>
             </v-container>
           </v-col>
-          <v-col class="text-center" md="4" v-if="activeItem" style="background-color: white;">
-            <v-container>
+          <v-col class="text-center" md="4" lg="3" v-if="activeItem" style="background-color: rgb(255, 185, 5);">
+            <v-container class="stickyCard">
               <v-card class="mx-auto ma-4 pa-2" max-width="344">
-                <!--v-img class="detailPhoto"
-              :src="'https://image.tmdb.org/t/p/w500/' + activeItem.backdrop_path" 
-              height="200px"
-            ></v-img-->
-                <v-img class="detailPhoto" src="C:\Users\aloma\Desktop\test2.jpg" height="200px">
-                </v-img>
+                <v-img class="detailPhoto" :src="'https://image.tmdb.org/t/p/w500/' + activeItem.backdrop_path"
+                  height="200px"></v-img>
+                <!--v-img class="detailPhoto" src="C:\Users\aloma\Desktop\test2.jpg" height="200px">
+                </v-img-->
                 <v-card-text>
-                  <v-row class="title mx-0">{{this.activeItem.title}}</v-row>
-                  <v-row class="mx-0">{{getYear(this.activeItem.release_date)}}</v-row>
+                  <v-row class="title mx-0"><a class="detailTitle"
+                      v-bind:href="'https://www.imdb.com/title/'+this.activeItem.imdb_id"
+                      target="_blank">{{this.activeItem.title}}</a></v-row>
+                  <v-row class="mx-0 mt-0" align="center">
+                    <v-col md="3" sm="3">
+                      {{getYear(this.activeItem.release_date)}}
+                    </v-col>
+                    <v-col md="9" sm="9" style="text-align: left;">
+                      <span v-for="(item, j) in activeItem.genres" :key="j">
+                        {{item.name}}{{activeItem.genres.length==j+1? '':','}}
+                      </span>
+                    </v-col>
+                  </v-row>
                   <v-row class="mx-0">
                     <v-rating v-bind:value="(this.activeItem.vote_average)/2" color="amber" dense half-increments
                       readonly size="24"></v-rating>
@@ -66,7 +76,6 @@
                   </v-row>
                   <v-row class="mx-0">
                     <p class="text-justify">{{this.activeItem.overview}}</p>
-
                   </v-row>
               </v-card>
             </v-container>
@@ -89,12 +98,12 @@
     vuetify: new Vuetify(),
     data() {
       return {
-        popMovies: null,
-        test: 'testok',
+        listMovies: null,
+        currentList: '',
         activeItem: null,
         api_key: 'ee9a597328f8cb873b99161adc6bfa93',
         default_top_movies_queryUrl: 'https://api.themoviedb.org/3/discover/movie?api_key=ee9a597328f8cb873b99161adc6bfa93&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1',
-        searchValue:null,
+        searchValue: null,
       }
     },
     filters: {
@@ -103,22 +112,47 @@
       }
     },
     mounted() {
-      axios
-        .get(this.default_top_movies_queryUrl)
-        .then(response => { (this.popMovies = response.data.results); console.log(this.popMovies) })
+      this.init();
     },
     methods: {
       showDetail: function (item) {
-        queryUrl = 'https://api.themoviedb.org/3/movie/' + item.id + '?api_key=' + this.api_key + '&language=en-US';
+        let = queryUrl = 'https://api.themoviedb.org/3/movie/' + item.id + '?language=en-US&api_key=' + this.api_key;
         axios
           .get(queryUrl)
-          .then(response => { this.activeItem = response.data; console.log(response) })
+          .then(response => {
+          this.activeItem = response.data;
+            this.activeItem.overview=this.truncateStringValue(this.activeItem.overview,200);
+            console.log(this.activeItem)
+          })
       },
       getYear: function (date) {
         return moment(date, 'YYYY-MM-DD').format('YYYY');
       },
-      search:function(){
-console.log(this.searchValue);
+      search: function () {
+        if (this.searchValue == '') {
+          this.init();
+          return;
+        }
+        let queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=' + this.api_key + '&language=en-US&page=1&include_adult=false&query=' + this.searchValue;
+        this.currentList = 'search: ' + this.searchValue;
+        axios
+          .get(queryUrl)
+          .then(response => { this.listMovies = response.data.results; })
+      },
+      truncateStringValue: function (context,length) {
+        let returnValue='';
+        console.log(context);
+        context.length>length? returnValue=context.substring(0, length)+'...':returnValue=context;
+        return returnValue;
+      },
+      clearChoose: function () {
+        this.activeItem = null;
+      },
+      init: function () {
+        this.currentList = "Popular";
+        axios
+          .get(this.default_top_movies_queryUrl)
+          .then(response => { (this.listMovies = response.data.results); console.log(this.listMovies) })
       }
     }
   })
@@ -126,5 +160,21 @@ console.log(this.searchValue);
 <style>
   .detailPhoto {
     box-shadow: inset 0px -40px 50px rgba(0, 0, 0, 1);
+  }
+
+  .rounded-card{
+    border-radius:10px;
+  }
+
+  .stickyCard {
+    position: sticky;
+    top: 65px;
+    z-index: 999;
+  }
+
+  .detailTitle {
+    color: #60bfce !important;
+    text-decoration-line: none;
+    text-align: left;
   }
 </style>
