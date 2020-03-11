@@ -9,19 +9,10 @@ Every component refreshes every 2 seconds to retreive the latest information(2 s
 ## Here's how to run the site
 ---
 
-You can...
-1. Clone the whole branch, input command at the root folder:
+### The easy way
+1. You can just clone \dist folder
 
-```
-npm run serve
-```
-
-and open the browser with url : http://localhost:8080/
-
-**or**
-2. You can go to \dist folder
-
-If you have **http-server** already, just open cmd and input:
+If you have **http-server** already, open cmd.exe and input:
 
 ```
 http-server
@@ -29,6 +20,18 @@ http-server
 
 If you don't have please go to: https://www.npmjs.com/package/http-server 
 to learn more about it.
+
+### Or the other way
+2. Clone the whole branch, input command at the root folder:
+
+```
+npm install
+npm run serve --fix
+```
+
+use --fix to fix linebreak-style problems.
+
+and open the browser with url : http://localhost:8080/
 
 
 ## Required libraries of this project
