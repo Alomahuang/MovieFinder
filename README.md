@@ -4,7 +4,7 @@ Popular movies will show up initially, and you can search movies by names.
 
 Click on the movie, you will see the details of the movie at the right-hand side.
 
-Every component refreshes every 2 seconds to retreive the latest information(2 seconds is way too often, but it's easier for you to check if it's working.)
+Every component refreshes every 2 seconds to retrieve the latest information(2 seconds is way too often, but it's easier for you to check if it's working.)
 
 ## Here's how to run the site
 
@@ -20,16 +20,16 @@ http-server
 If you don't have please go to: https://www.npmjs.com/package/http-server 
 to learn more about it.
 
-###### Or the complate way
+###### Or the complete way
 2. Clone the whole branch, input command at the root folder:
 
 ```
 npm install
-npm run serve --fix
+npm run serve
 ```
 
-use --fix to fix linebreak-style problems.
-*I fiexed the issue with editing eslintrc.js, more info in Problems section*
+use --fix to fix linebreak-style problems if there's any.
+*I fixed the issue with editing eslintrc.js, more information check Problems section*
 
 and open the browser with url : http://localhost:8080/
 
@@ -91,13 +91,13 @@ If you click on the Movie List empty spots(not on any items,) the details will h
 
 #### Detail.vue
 
-1. The release date of the movie origianlly is in YYYY-MM-DD form, but I prefer just showing the year. If you want it to show in other form, you can use ```this.$moment(date, 'YYYY-MM-DD').format('Your Formate');```
+1. The release date of the movie originally is in YYYY-MM-DD form, but I prefer just showing the year. If you want it to show in other form, you can use ```this.$moment(date, 'YYYY-MM-DD').format('Your Formate');```
 2. Overview of the movie will hide the context longer than String Length 200, you can modify ```truncateStringValue(this.activeItem.overview, 200)``` to change the setting.
 
 #### index.js
 
 1. Use mutation and action to control the state. Always!
-2. Genrally **type** in this page, 1 means Movie-list related stored states, and 2 is for Single-movie-detail stored states.
+2. Generally **type** in this page, 1 means Movie-list related stored states, and 2 is for Single-movie-detail stored states.
 
 ## Problems 
 
@@ -116,3 +116,4 @@ There are something I want to work on, but I will hand this version over right n
 * Query urls storage
 * Add Category Search
 * Pagination
+* RWD
