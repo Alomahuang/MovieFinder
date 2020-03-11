@@ -7,10 +7,9 @@ Click on the movie, you will see the details of the movie at the right-hand side
 Every component refreshes every 2 seconds to retreive the latest information(2 seconds is way too often, but it's easier for you to check if it's working.)
 
 ## Here's how to run the site
----
 
-### The easy way
-1. You can just clone \dist folder
+###### The easy way
+1. Clone \dist folder
 
 If you have **http-server** already, open cmd.exe and input:
 
@@ -21,7 +20,7 @@ http-server
 If you don't have please go to: https://www.npmjs.com/package/http-server 
 to learn more about it.
 
-### Or the other way
+###### Or the complate way
 2. Clone the whole branch, input command at the root folder:
 
 ```
@@ -30,12 +29,12 @@ npm run serve --fix
 ```
 
 use --fix to fix linebreak-style problems.
+*I fiexed the issue with editing eslintrc.js, more info in Problems section*
 
 and open the browser with url : http://localhost:8080/
 
 
 ## Required libraries of this project
---- 
 
 - [x] vue.js
 - [x] vuex.js
@@ -45,7 +44,6 @@ and open the browser with url : http://localhost:8080/
 - [x] ESLint with Airbnb Standard
 
 ## Required scenarios
----
 
 - [x] Connecting to the real IMDB Database
 - [x] Searching for specific movies
@@ -54,7 +52,6 @@ and open the browser with url : http://localhost:8080/
 - [x] Using the Vuetify framework
 
 ## Functions of app explained
----
 
 #### Show Movie List
 
@@ -77,7 +74,6 @@ When you click on Movie List items, the details of the movie will show up at you
 If you click on the Movie List empty spots(not on any items,) the details will hide and I stop the interval to retrieve for single movie details too.
 
 ## Codes explained
----
 
 #### Navbar.vue
 
@@ -103,10 +99,16 @@ If you click on the Movie List empty spots(not on any items,) the details will h
 1. Use mutation and action to control the state. Always!
 2. Genrally **type** in this page, 1 means Movie-list related stored states, and 2 is for Single-movie-detail stored states.
 
-## Problems I encountered
+## Problems 
 
 * When I try to get states from ```this.$store.state```, even with the non-existing states like ```this.$store.state.NotExisting```, Vue Cli wouldn't warn you about this.
 * I didn't understand the scenario of **Updating the information while the user is using the webapp** first, I thought what is requested is to refresh the page when the database of **The Movie DB** updates. And I can't see the relation with Vuex to it. But then I found out that twitter also updates the page continuously itself, so I can just use setInterval() to achieve retrieving latest information. The only thing needs to be avoided is not to set multiple interval and stop it when it's not necessary, to avoid the browser crashing down.
+* When I cloned the project from GitHub to test run. I encountered **linebreak-style** issue. The reason is:
+> When developing with a lot of people all having different editors, VCS applications and operating systems it may occur that different line endings are written by either of the mentioned (might especially happen when using the windows and mac versions of SourceTree together).
+> 
+> The linebreaks (new lines) used in windows operating system are usually carriage returns (CR) followed by a line feed (LF) making it a carriage return line feed (CRLF) whereas Linux and Unix use a simple line feed (LF). The corresponding control sequences are "\n" (for LF) and "\r\n" for (CRLF).
+
+so to fix it, I put ```"linebreak-style": 0,``` in eslintrc.js. The other way is to use ```npm run serve --fix``` to run the project.
 
 ## Things to work on:
 
