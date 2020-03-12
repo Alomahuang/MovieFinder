@@ -1,5 +1,5 @@
 <template>
-  <v-col class="text-center" md="4" lg="3" v-if="activeItem"
+  <v-col class="text-center"  v-bind:order="order" md="4" lg="3" v-if="activeItem"
   style="background: -webkit-linear-gradient(rgb(250, 205, 93),rgb(255, 185, 5));">
     <v-container class="stickyCard">
       <v-card class="mx-auto ma-4 pa-2" max-width="344">
@@ -41,6 +41,16 @@ export default {
   computed: {
     activeItem() {
       return this.$store.state.activeItem;
+    },
+    order() {
+      let order = 12;
+      switch (this.$vuetify.breakpoint.name) {
+        default: order = 12;
+          break;
+        case 'xs': order = 1;
+          break;
+      }
+      return order;
     },
   },
   methods: {

@@ -51,13 +51,11 @@ and open the browser with url : http://localhost:8080/
 - [x] Updating the information while the user is using the webapp
 - [x] Using the Vuetify framework
 
-## Functions of app explained
+## Features
 
 #### Show Movie List
 
-Initially the page will load the first page of popular movies with api **Movie Discover**
-
-Movie list will reload when users interact with search function, including searching certain words or pressing *esc*.
+Initially the page will load the first page of popular movies with api **Movie Discover** with parameter **sort_by=popularity.desc**
 
 Movies without photos will be shown the name.
 
@@ -65,13 +63,17 @@ Movies without photos will be shown the name.
 
 You may search the movie with the name of movies.
 
-If you input nothing and press enter, you will direct back to popular movies.
+If you input nothing or pressing *esc*, you will see default list : popular movies.
 
 #### Show Detail of a movie
 
 When you click on Movie List items, the details of the movie will show up at your right-hand side.
 
-If you click on the Movie List empty spots(not on any items,) the details will hide and I stop the interval to retrieve for single movie details too.
+If you click on the Movie List empty spots(not on any items,) the details will hide and it stops the interval to retrieve for single movie details too.
+
+#### Pages
+
+You can click on the Arrow Icon to change the page of the movie list.
 
 ## Codes explained
 
@@ -88,6 +90,8 @@ If you click on the Movie List empty spots(not on any items,) the details will h
 2. Currently I retrieve datas every 2 seconds for testing.
 3. showDetail() calls api **Get Details** with movie_id.
 4. clearChoose() will trigger when you click on the background of this component, which will hide the single-movie-detail(Detail.vue component.)
+5. onResize() is used for screen view site detecting to cutomize the size of movie list poster previews.
+6. page number isn't isolatedly stored, we manipuate $store.state.search_url; since page number is always at the end of this url, nextPage() and lastPage() take advantage of that, to do page changing.
 
 #### Detail.vue
 
@@ -101,7 +105,7 @@ If you click on the Movie List empty spots(not on any items,) the details will h
 
 ## Problems 
 
-* When I try to get states from ```this.$store.state```, even with the non-existing states like ```this.$store.state.NotExisting```, Vue Cli wouldn't warn you about this.
+* When I try to get states from ```this.$store.state```, even with the non-existing states like ```this.$store.state.NotExisting```, Vue Cli wouldn't warn you about this. > happened to me twice!
 * I didn't understand the scenario of **Updating the information while the user is using the webapp** first, I thought what is requested is to refresh the page when the database of **The Movie DB** updates. And I can't see the relation with Vuex to it. But then I found out that twitter also updates the page continuously itself, so I can just use setInterval() to achieve retrieving latest information. The only thing needs to be avoided is not to set multiple interval and stop it when it's not necessary, to avoid the browser crashing down.
 * When I cloned the project from GitHub to test run. I encountered **linebreak-style** issue. The reason is:
 > When developing with a lot of people all having different editors, VCS applications and operating systems it may occur that different line endings are written by either of the mentioned (might especially happen when using the windows and mac versions of SourceTree together).

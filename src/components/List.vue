@@ -1,9 +1,10 @@
-<template >
-  <v-col md="8" lg="9" v-on:click.self='clearChoose'
-  style="background: -webkit-linear-gradient(rgb(153, 231, 243),rgb(0, 177, 191));padding:0 40px;">
-  <v-container>
+<template>
+  <v-col md="8" lg="9" v-bind:order="order" v-on:click.self='clearChoose'
+  style="background: -webkit-linear-gradient(rgb(153, 231, 243),rgb(0, 177, 191));padding:0 40px;" >
+  <v-container v-resize="onResize" v-on:keyup.right='nextPage'>
     <v-layout row wrap v-on:click.self='clearChoose'>
-      <v-card class="mx-auto ma-4 pa-2 rounded-card listPhoto" max-width="180" width="180" tile
+      <v-card class="mx-auto ma-4 pa-2 rounded-card listPhoto mt-0" max-width="180"
+      v-bind:width="windowSize>500?'180px':'150px'" tile
       v-on:click="showDetail(item)" v-for="(item, i) in MovieList" :key="i">
         <div v-if="item.poster_path"> <v-img  :src="'https://image.tmdb.org/t/p/w500/' + item.poster_path"
         max-height="300px" dark></v-img></div>
@@ -12,6 +13,15 @@
       </v-card>
     </v-layout>
   </v-container>
+  <v-row class="stickyButton">
+    <v-btn color="#ffc107" dark v-on:click='lastPage'>
+        <v-icon dark>mdi-arrow-left</v-icon>
+    </v-btn>
+    <v-spacer></v-spacer>
+    <v-btn color="#ffc107" dark v-on:click='nextPage'>
+        <v-icon dark>mdi-arrow-right</v-icon>
+    </v-btn>
+  </v-row>
 </v-col>
 </template>
 
@@ -20,12 +30,23 @@ export default {
   name: 'List',
   data() {
     return {
-      listMovies: null,
+      windowSize: 0,
+      page: 1,
     };
   },
   computed: {
     MovieList() {
       return this.$store.state.movieList;
+    },
+    order() {
+      let order = 1;
+      switch (this.$vuetify.breakpoint.name) {
+        default: order = 1;
+          break;
+        case 'xs': order = 12;
+          break;
+      }
+      return order;
     },
   },
   methods: {
@@ -46,7 +67,7 @@ export default {
       this.$store.commit('UPDATETIMER', { TIMER_NUMBER, type: 1 });
     },
     showDetail(item) {
-      const queryUrl = `https://api.themoviedb.org/3/movie/${item.id}?language=en-US&api_key=${this.$store.state.api_key}`;
+      const queryUrl = `${this.$store.state.basic_api_url}movie/${item.id}?language=en-US&api_key=${this.$store.state.api_key}`;
       this.$store.commit('CHANGEURL', { queryUrl, type: 2 });
       this.$store.dispatch('get_Detail');
       // Abandon interval of updating single movie details.
@@ -76,6 +97,24 @@ export default {
       // Here we will hide the single movie detail.
       this.$store.commit('CLEARDETAIL');
     },
+    onResize() {
+      this.windowSize = window.innerWidth;
+    },
+    nextPage() {
+      let queryUrl = `${this.$store.state.search_url}`;
+      const page = Number(queryUrl.slice(queryUrl.indexOf('page=') + 5)) + 1;
+      queryUrl = queryUrl.slice(0, queryUrl.indexOf('page=') + 5) + page.toString();
+      this.$store.commit('CHANGEURL', { queryUrl, type: 1 });
+      this.$store.dispatch('get_List');
+    },
+    lastPage() {
+      let queryUrl = `${this.$store.state.search_url}`;
+      if (Number(queryUrl.slice(queryUrl.indexOf('page=') + 5)) === 1) return;
+      const page = Number(queryUrl.slice(queryUrl.indexOf('page=') + 5)) - 1;
+      queryUrl = queryUrl.slice(0, queryUrl.indexOf('page=') + 5) + page.toString();
+      this.$store.commit('CHANGEURL', { queryUrl, type: 1 });
+      this.$store.dispatch('get_List');
+    },
   },
   mounted() {
     this.init();
@@ -86,7 +125,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .rounded-card{
     border-radius:10px;
@@ -117,4 +155,9 @@ export default {
     line-height: 80px;
     font-weight: 100;
  }
+ .stickyButton {
+    position: sticky;
+    bottom: 5%;
+    z-index: 999;
+  }
 </style>

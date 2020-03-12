@@ -6,14 +6,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    basic_api_url: 'https://api.themoviedb.org/3/',
     currentLocation: '',
     activeItem: null,
     api_key: 'ee9a597328f8cb873b99161adc6bfa93',
     searchValue: null,
-    updateCounter: 30,
     movieList: null,
-    search_url: '',
-    search_url_default: 'https://api.themoviedb.org/3/discover/movie?api_key=ee9a597328f8cb873b99161adc6bfa93&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1',
+    search_url: 'https://api.themoviedb.org/3/discover/movie?language=en-US&sort_by=popularity.desc&include_adult=false&api_key=ee9a597328f8cb873b99161adc6bfa93&page=1',
     detail_url: '',
     listUpdatingTimerNumber: null,
     detailUpdatingTimerNumber: null,
@@ -55,13 +54,7 @@ export default new Vuex.Store({
       /* unlock the console.log if you want to
       check how often the movie list updates. */
       // console.log('List Updates!');
-      let queryUrl = '';
-      if (state.search_url !== '') {
-        queryUrl = state.search_url;
-      } else {
-        queryUrl = state.search_url_default;
-      }
-      Axios.get(queryUrl).then((response) => {
+      Axios.get(state.search_url).then((response) => {
         (commit('UPDATELIST', response.data.results));
       });
     },
@@ -75,6 +68,7 @@ export default new Vuex.Store({
       });
     },
   },
-  modules: {
+  getters: {
+    doneTodos: (state) => state.api_key,
   },
 });
