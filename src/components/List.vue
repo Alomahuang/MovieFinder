@@ -53,11 +53,6 @@ export default {
     init() {
       this.$store.commit('UPDATELOCATION', 'Popular');
       this.$store.dispatch('get_List');
-      /* When there's an interval, this will
-      abandon interval of updating our movie list */
-      if (this.$store.state.detailUpdatingTimerNumber != null) {
-        window.clearInterval(this.$store.state.listUpdatingTimerNumber);
-      }
       /* We keep the page up to date every 2 seconds.
          In reality I would choose 30 seconds, but 2 seconds here
          is fine for checking if there's multiple intervel */
@@ -97,6 +92,13 @@ export default {
       // Here we will hide the single movie detail.
       this.$store.commit('CLEARDETAIL');
     },
+    stopListUpdate() {
+      /* This function is not used currently.
+      When there's an interval, this will abandon interval of updating our movie list */
+      if (this.$store.state.detailUpdatingTimerNumber != null) {
+        window.clearInterval(this.$store.state.listUpdatingTimerNumber);
+      }
+    },
     onResize() {
       this.windowSize = window.innerWidth;
     },
@@ -106,6 +108,7 @@ export default {
       queryUrl = queryUrl.slice(0, queryUrl.indexOf('page=') + 5) + page.toString();
       this.$store.commit('CHANGEURL', { queryUrl, type: 1 });
       this.$store.dispatch('get_List');
+      this.$store.commit('UPDATEPAGE', page);
     },
     lastPage() {
       let queryUrl = `${this.$store.state.search_url}`;
@@ -114,6 +117,7 @@ export default {
       queryUrl = queryUrl.slice(0, queryUrl.indexOf('page=') + 5) + page.toString();
       this.$store.commit('CHANGEURL', { queryUrl, type: 1 });
       this.$store.dispatch('get_List');
+      this.$store.commit('UPDATEPAGE', page);
     },
   },
   mounted() {

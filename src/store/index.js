@@ -16,11 +16,15 @@ export default new Vuex.Store({
     detail_url: '',
     listUpdatingTimerNumber: null,
     detailUpdatingTimerNumber: null,
+    page: 1,
   },
   mutations: {
     // Update Breadcrumbs on Navbar
     UPDATELOCATION(state, location) {
       state.currentLocation = location;
+    },
+    UPDATEPAGE(state, page) {
+      state.page = page;
     },
     // Update query address to movie-db
     CHANGEURL(state, { queryUrl, type }) {

@@ -61,19 +61,21 @@ Movies without photos will be shown the name.
 
 #### Search
 
-You may search the movie with the name of movies.
-
+You may search the movie with the name of movies in the navbar.
 If you input nothing or pressing *esc*, you will see default list : popular movies.
 
-#### Show Detail of a movie
+In movie details, you can click on the genre to search movies with the same genre.
+
+#### Show Details of a movie
 
 When you click on Movie List items, the details of the movie will show up at your right-hand side.
 
-If you click on the Movie List empty spots(not on any items,) the details will hide and it stops the interval to retrieve for single movie details too.
+If you click on the Movie List background(not on any items,) the details will hide and it stops the interval to retrieve for single movie details too.
 
 #### Pages
 
 You can click on the Arrow Icon to change the page of the movie list.
+Breadscrumbs show which page you're at if you change page.
 
 ## Codes explained
 
