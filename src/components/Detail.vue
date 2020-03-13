@@ -1,5 +1,5 @@
 <template>
-  <v-col class="text-center" md="4" lg="3" v-if="activeItem"
+  <v-col class="text-center"  v-bind:order="order" md="4" lg="3" v-if="activeItem"
   style="background: -webkit-linear-gradient(rgb(250, 205, 93),rgb(255, 185, 5));">
     <v-container class="stickyCard">
       <v-card class="mx-auto ma-4 pa-2" max-width="344">
@@ -12,8 +12,9 @@
             <v-col md="3" sm="3">
               {{getYear(this.activeItem.release_date)}}
             </v-col>
-            <v-col md="9" sm="9" style="text-align: left;">
-              <span v-for="(item, j) in activeItem.genres" :key="j">
+            <v-col md="9" sm="9" style="text-align:left;">
+              <span v-for="(item, j) in activeItem.genres" :key="j"
+                v-on:click="show_list_genre(item)" class="genre">
                 {{item.name}}{{activeItem.genres.length==j+1? '':','}}
               </span>
             </v-col>
@@ -42,6 +43,16 @@ export default {
     activeItem() {
       return this.$store.state.activeItem;
     },
+    order() {
+      let order = 12;
+      switch (this.$vuetify.breakpoint.name) {
+        default: order = 12;
+          break;
+        case 'xs': order = 1;
+          break;
+      }
+      return order;
+    },
   },
   methods: {
     getYear(date) {
@@ -56,6 +67,15 @@ export default {
         returnValue = context;
       }
       return returnValue;
+    },
+    show_list_genre(item) {
+      let queryUrl = `${this.$store.state.basic_api_url}`;
+      this.$store.commit('UPDATELOCATION', item.name);
+      queryUrl += `discover/movie?sort_by=popularity.desc&with_genres=${item.id}`;
+      queryUrl += `&language=en-US&include_adult=false&api_key=${this.$store.state.api_key}&page=1`;
+      this.$store.commit('CHANGEURL', { queryUrl, type: 1 });
+      this.$store.dispatch('get_List');
+      this.$store.commit('UPDATEPAGE', 1);
     },
   },
 };
@@ -72,5 +92,14 @@ export default {
     color: #60bfce !important;
     text-decoration-line: none;
     text-align: left;
+  }
+
+  .genre{
+    cursor:pointer;
+    color: #fab54dfa;
+  }
+
+  .genre:hover{
+    text-decoration: underline;
   }
 </style>

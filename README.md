@@ -1,38 +1,10 @@
 # Movie Finder
 
-Popular movies will show up initially, and you can search movies by names.
+Popular movie List will show up initially, and you can search movies by names, click arrow icon to change pages.
 
-Click on the movie, you will see the details of the movie at the right-hand side.
+Click on the movie, you then see the details of the movie on the right of the screen.
 
-Every component refreshes every 2 seconds to retrieve the latest information(2 seconds is way too often, but it's easier for you to check if it's working.)
-
-## Here's how to run the site
-
-###### The easy way
-1. Clone \dist folder
-
-If you have **http-server** already, open cmd.exe and input:
-
-```
-http-server
-```
-
-If you don't have please go to: https://www.npmjs.com/package/http-server 
-to learn more about it.
-
-###### Or the complete way
-2. Clone the whole branch, input command at the root folder:
-
-```
-npm install
-npm run serve
-```
-
-use --fix to fix linebreak-style problems if there's any.
-*I fixed the issue with editing eslintrc.js, more information check Problems section*
-
-and open the browser with url : http://localhost:8080/
-
+Both list and deail components refresh every 2 seconds to retrieve the latest information(2 seconds is way too often, but it's easier for you to check if it's working.)
 
 ## Required libraries of this project
 
@@ -51,27 +23,71 @@ and open the browser with url : http://localhost:8080/
 - [x] Updating the information while the user is using the webapp
 - [x] Using the Vuetify framework
 
-## Functions of app explained
+## Here's how to run the site
+
+###### The easy way
+1. Clone \dist folder
+
+If you have **http-server** already, open cmd.exe and input:
+
+```
+http-server
+```
+
+If you do not have it, use
+
+```
+npm install http-server
+```
+to install it and input the command above, then you can just run the website even in another PC.
+
+###### Or the complete way
+2. Clone the whole branch, input command at the root folder:
+
+```
+npm install
+npm run serve
+```
+
+use --fix to fix linebreak-style problems if there's any.
+*I fixed the issue with editing eslintrc.js, more information check Problems section*
+
+and open the browser with url : http://localhost:8080/
+
+3. Unit Test on Mutations
+
+I am still figuring out tests, but really basic one's are implemented.
+
+Just enter:
+```
+npm run test:unit
+```
+
+## Features
 
 #### Show Movie List
 
-Initially the page will load the first page of popular movies with api **Movie Discover**
+Initially the page will load the first page of popular movies with api **Movie Discover** with parameter **sort_by=popularity.desc**
 
-Movie list will reload when users interact with search function, including searching certain words or pressing *esc*.
-
-Movies without photos will be shown the name.
+Movies without photos will be shown with their names.
 
 #### Search
 
-You may search the movie with the name of movies.
+You may search the movie with the name of movies in the navbar.
+If you input nothing or pressing *esc*, you will see default list : popular movies.
 
-If you input nothing and press enter, you will direct back to popular movies.
+In movie details, you can click on the genre to search movies with the same genre.
 
-#### Show Detail of a movie
+#### Show Details of a movie
 
 When you click on Movie List items, the details of the movie will show up at your right-hand side.
 
-If you click on the Movie List empty spots(not on any items,) the details will hide and I stop the interval to retrieve for single movie details too.
+If you click on the Movie List background(not on any items,) the details will hide and it stops the interval to retrieve for single movie details too.
+
+#### Pages
+
+You can click on the Arrow Icon to change the page of the movie list.
+Breadscrumbs show which page you're at if you change page.
 
 ## Codes explained
 
@@ -88,6 +104,8 @@ If you click on the Movie List empty spots(not on any items,) the details will h
 2. Currently I retrieve datas every 2 seconds for testing.
 3. showDetail() calls api **Get Details** with movie_id.
 4. clearChoose() will trigger when you click on the background of this component, which will hide the single-movie-detail(Detail.vue component.)
+5. onResize() is used for screen view site detecting to cutomize the size of movie list poster previews.
+6. page number isn't isolatedly stored, we manipuate $store.state.search_url; since page number is always at the end of this url, nextPage() and lastPage() take advantage of that, to do page changing.
 
 #### Detail.vue
 
@@ -101,7 +119,7 @@ If you click on the Movie List empty spots(not on any items,) the details will h
 
 ## Problems 
 
-* When I try to get states from ```this.$store.state```, even with the non-existing states like ```this.$store.state.NotExisting```, Vue Cli wouldn't warn you about this.
+* When I try to get states from ```this.$store.state```, even with the non-existing states like ```this.$store.state.NotExisting```, Vue Cli wouldn't warn you about this. > happened to me twice!
 * I didn't understand the scenario of **Updating the information while the user is using the webapp** first, I thought what is requested is to refresh the page when the database of **The Movie DB** updates. And I can't see the relation with Vuex to it. But then I found out that twitter also updates the page continuously itself, so I can just use setInterval() to achieve retrieving latest information. The only thing needs to be avoided is not to set multiple interval and stop it when it's not necessary, to avoid the browser crashing down.
 * When I cloned the project from GitHub to test run. I encountered **linebreak-style** issue. The reason is:
 > When developing with a lot of people all having different editors, VCS applications and operating systems it may occur that different line endings are written by either of the mentioned (might especially happen when using the windows and mac versions of SourceTree together).
@@ -113,7 +131,7 @@ so to fix it, I put ```"linebreak-style": 0,``` in eslintrc.js. The other way is
 ## Things to work on:
 
 There are something I want to work on, but I will hand this version over right now:
-* Query urls storage
-* Add Category Search
-* Pagination
-* RWD
+* ~~Query urls storage~~ : delete some hard-codes. 
+* ~~Add Category Search~~ : now can click on categories in details
+* ~~Pagination~~ implement page changer without v-pagination
+* RWD: includes basic RWD
