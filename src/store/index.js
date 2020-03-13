@@ -76,3 +76,37 @@ export default new Vuex.Store({
     doneTodos: (state) => state.api_key,
   },
 });
+
+export const mutations = {
+  UPDATELOCATION(state, location) {
+    state.currentLocation = location;
+  },
+  UPDATEPAGE(state, page) {
+    state.page = page;
+  },
+  // Update query address to movie-db
+  CHANGEURL(state, { queryUrl, type }) {
+    if (type === 1) {
+      state.search_url = queryUrl;
+    } else {
+      state.detail_url = queryUrl;
+    }
+  },
+  UPDATELIST(state, newList) {
+    state.movieList = newList;
+  },
+  UPDATEDETAIL(state, newDetail) {
+    state.activeItem = newDetail;
+  },
+  CLEARDETAIL(state) {
+    state.activeItem = null;
+  },
+  // Save the interval timer_id for destroying
+  UPDATETIMER(state, { TIMER_NUMBER, type }) {
+    if (type === 1) {
+      state.listUpdatingTimerNumber = TIMER_NUMBER;
+    } else {
+      state.detailUpdatingTimerNumber = TIMER_NUMBER;
+    }
+  },
+};
