@@ -1,38 +1,10 @@
 # Movie Finder
 
-Popular movies will show up initially, and you can search movies by names.
+Popular movie List will show up initially, and you can search movies by names, click arrow icon to change pages.
 
-Click on the movie, you will see the details of the movie at the right-hand side.
+Click on the movie, you then see the details of the movie on the right of the screen.
 
-Every component refreshes every 2 seconds to retrieve the latest information(2 seconds is way too often, but it's easier for you to check if it's working.)
-
-## Here's how to run the site
-
-###### The easy way
-1. Clone \dist folder
-
-If you have **http-server** already, open cmd.exe and input:
-
-```
-http-server
-```
-
-If you don't have please go to: https://www.npmjs.com/package/http-server 
-to learn more about it.
-
-###### Or the complete way
-2. Clone the whole branch, input command at the root folder:
-
-```
-npm install
-npm run serve
-```
-
-use --fix to fix linebreak-style problems if there's any.
-*I fixed the issue with editing eslintrc.js, more information check Problems section*
-
-and open the browser with url : http://localhost:8080/
-
+Both list and deail components refresh every 2 seconds to retrieve the latest information(2 seconds is way too often, but it's easier for you to check if it's working.)
 
 ## Required libraries of this project
 
@@ -51,13 +23,53 @@ and open the browser with url : http://localhost:8080/
 - [x] Updating the information while the user is using the webapp
 - [x] Using the Vuetify framework
 
+## Here's how to run the site
+
+###### The easy way
+1. Clone \dist folder
+
+If you have **http-server** already, open cmd.exe and input:
+
+```
+http-server
+```
+
+If you do not have it, use
+
+```
+npm install http-server
+```
+to install it and input the command above, then you can just run the website even in another PC.
+
+###### Or the complete way
+2. Clone the whole branch, input command at the root folder:
+
+```
+npm install
+npm run serve
+```
+
+use --fix to fix linebreak-style problems if there's any.
+*I fixed the issue with editing eslintrc.js, more information check Problems section*
+
+and open the browser with url : http://localhost:8080/
+
+3. Unit Test on Mutations
+
+I am still figuring out tests, but really basic one's are implemented.
+
+Just enter:
+```
+npm run test:unit
+```
+
 ## Features
 
 #### Show Movie List
 
 Initially the page will load the first page of popular movies with api **Movie Discover** with parameter **sort_by=popularity.desc**
 
-Movies without photos will be shown the name.
+Movies without photos will be shown with their names.
 
 #### Search
 
@@ -119,7 +131,7 @@ so to fix it, I put ```"linebreak-style": 0,``` in eslintrc.js. The other way is
 ## Things to work on:
 
 There are something I want to work on, but I will hand this version over right now:
-* Query urls storage
-* Add Category Search
-* Pagination
-* RWD
+* ~~Query urls storage~~ : delete some hard-codes. 
+* ~~Add Category Search~~ : now can click on categories in details
+* ~~Pagination~~ implement page changer without v-pagination
+* RWD: includes basic RWD
