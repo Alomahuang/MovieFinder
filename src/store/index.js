@@ -17,6 +17,7 @@ export default new Vuex.Store({
     listUpdatingTimerNumber: null,
     detailUpdatingTimerNumber: null,
     page: 1,
+    sideFront: true,
   },
   mutations: {
     // Update Breadcrumbs on Navbar
@@ -33,6 +34,9 @@ export default new Vuex.Store({
       } else {
         state.detail_url = queryUrl;
       }
+    },
+    CHANGESIDE(state, isFront) {
+      state.sideFront = isFront;
     },
     UPDATELIST(state, newList) {
       state.movieList = newList;
@@ -54,11 +58,17 @@ export default new Vuex.Store({
   },
   actions: {
     // Get movie list from the movie-db
-    get_List({ commit, state }) {
+    get_List({ commit, state, dispatch }) {
       /* unlock the console.log if you want to
       check how often the movie list updates. */
       // console.log('List Updates!');
       Axios.get(state.search_url).then((response) => {
+        // Without results, we will give you a 404 movie list :)
+        if (response.data.results.length === 0) {
+          const queryUrl = `${state.basic_api_url}search/movie?query=404${state.search_url.slice(state.search_url.indexOf('&'), state.search_url.length)}`;
+          commit('CHANGEURL', { queryUrl, type: 1 });
+          dispatch('get_List');
+        }
         (commit('UPDATELIST', response.data.results));
       });
     },
@@ -67,13 +77,20 @@ export default new Vuex.Store({
       /* unlock the console.log if you want to
       check how often the single movie detail updates. */
       // console.log('Detail Updates!');
-      Axios.get(state.detail_url).then((response) => {
-        (commit('UPDATEDETAIL', response.data));
-      });
+      const videoUrl = state.detail_url.replace('?', '/videos?');
+      const requestOne = Axios.get(state.detail_url);
+      const requestTwo = Axios.get(videoUrl);
+      Axios.all([requestOne, requestTwo]).then(Axios.spread((...responses) => {
+        // eslint-disable-next-line prefer-const
+        let responseOne = responses[0].data;
+        const responseTwo = responses[1].data.results;
+        if (responseTwo.length > 0) {
+          const trailer = responses[1].data.results.find((obj) => obj.type === 'Trailer');
+          if (typeof (trailer) !== 'undefined') responseOne.trailerid = trailer.key;
+        }
+        (commit('UPDATEDETAIL', responseOne));
+      }));
     },
-  },
-  getters: {
-    doneTodos: (state) => state.api_key,
   },
 });
 
