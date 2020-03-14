@@ -6,6 +6,8 @@ Click on the movie, you then see the details of the movie on the right of the sc
 
 Both list and deail components refresh every 2 seconds to retrieve the latest information(2 seconds is way too often, but it's easier for you to check if it's working.)
 
+I **hide** some fun features inside this project, hope you will find them :)
+
 ## Required libraries of this project
 
 - [x] vue.js
@@ -81,6 +83,8 @@ In movie details, you can click on the genre to search movies with the same genr
 #### Show Details of a movie
 
 When you click on Movie List items, the details of the movie will show up at your right-hand side.
+
+Click on the poster, and you can watch the trailer.
 
 If you click on the Movie List background(not on any items,) the details will hide and it stops the interval to retrieve for single movie details too.
 

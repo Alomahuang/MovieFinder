@@ -8,7 +8,8 @@
       v-on:click="showDetail(item)" v-for="(item, i) in MovieList" :key="i">
         <div v-if="item.poster_path"> <v-img  :src="'https://image.tmdb.org/t/p/w500/' + item.poster_path"
         max-height="300px" dark></v-img></div>
-        <div v-else class="listEmptyPhoto"><a style="color:rgb(255, 185, 5)">
+        <div v-else class="listEmptyPhoto"
+        style="max-height:245px;"><a style="color:rgb(255, 185, 5)">
           {{truncateStringValue(item.title,15)}}</a></div>
       </v-card>
     </v-layout>
@@ -64,6 +65,7 @@ export default {
     showDetail(item) {
       const queryUrl = `${this.$store.state.basic_api_url}movie/${item.id}?language=en-US&api_key=${this.$store.state.api_key}`;
       this.$store.commit('CHANGEURL', { queryUrl, type: 2 });
+      this.$store.commit('CHANGESIDE', true);
       this.$store.dispatch('get_Detail');
       // Abandon interval of updating single movie details.
       if (this.$store.state.detailUpdatingTimerNumber != null) {
@@ -103,6 +105,8 @@ export default {
       this.windowSize = window.innerWidth;
     },
     nextPage() {
+      // If current movie list items are less than 20, you can't go to next page.
+      if (this.$store.state.movieList.length < 20) return;
       let queryUrl = `${this.$store.state.search_url}`;
       const page = Number(queryUrl.slice(queryUrl.indexOf('page=') + 5)) + 1;
       queryUrl = queryUrl.slice(0, queryUrl.indexOf('page=') + 5) + page.toString();
@@ -112,8 +116,9 @@ export default {
     },
     lastPage() {
       let queryUrl = `${this.$store.state.search_url}`;
-      if (Number(queryUrl.slice(queryUrl.indexOf('page=') + 5)) === 1) return;
-      const page = Number(queryUrl.slice(queryUrl.indexOf('page=') + 5)) - 1;
+      // Don't think about going to previous page is you're already at page 1.
+      if (this.$store.state.page === 1) return;
+      const page = this.$store.state.page - 1;
       queryUrl = queryUrl.slice(0, queryUrl.indexOf('page=') + 5) + page.toString();
       this.$store.commit('CHANGEURL', { queryUrl, type: 1 });
       this.$store.dispatch('get_List');
@@ -143,14 +148,15 @@ export default {
   .listPhoto:hover {
   animation: shake 0.3s;
   animation-iteration-count: infinite;
-}
-@keyframes shake {
-  0% { transform: translate(1px, 1px) rotate(-1deg); }
-  25% { transform: translate(-1px, 1px) rotate(1deg); }
-  50% { transform: translate(-1px, -1px) rotate(-1deg); }
-  75% { transform: translate(1px, -1px) rotate(1deg); }
-  100% { transform: translate(-1px, -1px) rotate(-1deg); }
-}
+  }
+  @keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(-1deg); }
+    25% { transform: translate(-1px, 1px) rotate(1deg); }
+    50% { transform: translate(-1px, -1px) rotate(-1deg); }
+    75% { transform: translate(1px, -1px) rotate(1deg); }
+    100% { transform: translate(-1px, -1px) rotate(-1deg); }
+  }
+
  .listEmptyPhoto{
   overflow: hidden;
     font-size: 75px;
@@ -159,6 +165,7 @@ export default {
     line-height: 80px;
     font-weight: 100;
  }
+
  .stickyButton {
     position: sticky;
     bottom: 5%;
