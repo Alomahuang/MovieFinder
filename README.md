@@ -8,40 +8,12 @@ Both list and deail components refresh every 2 seconds to retrieve the latest in
 
 I **hide** some fun features inside this project, hope you will find them :)
 
-## Required libraries of this project
-
-- [x] vue.js
-- [x] vuex.js
-- [x] axios.js
-- [x] vuetify.js
-- [x] moment.js
-- [x] ESLint with Airbnb Standard
-
-## Required scenarios
-
-- [x] Connecting to the real IMDB Database
-- [x] Searching for specific movies
-- [x] See details of a specific movie
-- [x] Updating the information while the user is using the webapp
-- [x] Using the Vuetify framework
-
 ## Here's how to run the site
 
 ###### The easy way
 1. Clone \dist folder
 
-If you have **http-server** already, open cmd.exe and input:
-
-```
-http-server
-```
-
-If you do not have it, use
-
-```
-npm install http-server
-```
-to install it and input the command above, then you can just run the website even in another PC.
+and just open index.html!
 
 ###### Or the complete way
 2. Clone the whole branch, input command at the root folder:
@@ -131,6 +103,23 @@ Breadscrumbs show which page you're at if you change page.
 > The linebreaks (new lines) used in windows operating system are usually carriage returns (CR) followed by a line feed (LF) making it a carriage return line feed (CRLF) whereas Linux and Unix use a simple line feed (LF). The corresponding control sequences are "\n" (for LF) and "\r\n" for (CRLF).
 
 so to fix it, I put ```"linebreak-style": 0,``` in eslintrc.js. The other way is to use ```npm run serve --fix``` to run the project.
+
+## Required libraries of this project
+
+- [x] vue.js
+- [x] vuex.js
+- [x] axios.js
+- [x] vuetify.js
+- [x] moment.js
+- [x] ESLint with Airbnb Standard
+
+## Required scenarios
+
+- [x] Connecting to the real IMDB Database
+- [x] Searching for specific movies
+- [x] See details of a specific movie
+- [x] Updating the information while the user is using the webapp
+- [x] Using the Vuetify framework
 
 ## Things to work on:
 
