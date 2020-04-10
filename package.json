@@ -1,6 +1,7 @@
 {
   "name": "movie-finder",
   "version": "0.1.0",
+  "wst": "/dist/",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
