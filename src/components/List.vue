@@ -1,7 +1,7 @@
 <template>
   <v-col md="8" lg="9" v-bind:order="order" v-on:click.self='clearChoose'
   style="background: -webkit-linear-gradient(rgb(153, 231, 243),rgb(0, 177, 191));padding:0 40px;" >
-  <v-container v-resize="onResize" v-on:keyup.right='nextPage'>
+  <v-container v-resize="onResize" v-on:keyup.right='nextPage' id="responseAPI">
     <v-layout row wrap v-on:click.self='clearChoose'>
       <v-card class="mx-auto ma-4 pa-2 rounded-card listPhoto mt-0" max-width="180"
       v-bind:width="windowSize>500?'180px':'150px'" tile
@@ -25,7 +25,10 @@
   </v-row>
 </v-col>
 </template>
-
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
 <script>
 export default {
   name: 'List',
@@ -63,7 +66,8 @@ export default {
       this.$store.commit('UPDATETIMER', { TIMER_NUMBER, type: 1 });
     },
     showDetail(item) {
-      const queryUrl = `${this.$store.state.basic_api_url}movie/${item.id}?language=en-US&api_key=${this.$store.state.api_key}`;
+      const queryUrl = `${this.$store.state.basic_api_url}movie/${item.id}?`+
+      `language=en-US&api_key=${this.$store.state.api_key}`;
       this.$store.commit('CHANGEURL', { queryUrl, type: 2 });
       this.$store.commit('CHANGESIDE', true);
       this.$store.dispatch('get_Detail');
